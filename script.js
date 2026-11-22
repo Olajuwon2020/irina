@@ -13,7 +13,6 @@ let transaction = {};
 const pages = [
     "accountPage",
     "uploadPage",
-    "loadingPage",
     "successPage",
     "transferPage",
     "promptPage",
@@ -22,18 +21,43 @@ const pages = [
 ];
 
 
+let pageTransitionTimer;
+
 function showPage(pageName) {
 
+    let target = document.getElementById(pageName);
+    let loader = document.getElementById("globalLoader");
+
+    if (!target || !loader || !pages.includes(pageName)) {
+        console.log("Page not found:", pageName);
+        return;
+    }
+
+    // Stop any previous page transition
+    if (pageTransitionTimer) {
+        clearTimeout(pageTransitionTimer);
+    }
+
+    // Hide all pages
     pages.forEach(function(page) {
-
-        document.getElementById(page)
-            .classList.add("d-none");
-
+        document.getElementById(page).classList.add("d-none");
     });
 
-    document.getElementById(pageName)
-        .classList.remove("d-none");
+    // Show spinner
+    loader.classList.remove("d-none");
 
+    // Wait 3 seconds
+    pageTransitionTimer = setTimeout(function() {
+
+        // Hide spinner
+        loader.classList.add("d-none");
+
+        // Show the next page
+        target.classList.remove("d-none");
+
+        pageTransitionTimer = null;
+
+    }, 1000);
 }
 
 
@@ -125,32 +149,19 @@ function previewImage(event, previewID) {
 
 function startVerification() {
 
-    let frontID =
-        document.getElementById("frontID").files[0];
-
-    let backID =
-        document.getElementById("backID").files[0];
+    let frontID = document.getElementById("frontID").files[0];
+    let backID = document.getElementById("backID").files[0];
 
     if (!frontID || !backID) {
-
         alert("Please select both sample images.");
-
         return;
-
     }
 
-    showPage("loadingPage");
+    transaction.verificationStatus = "Demo completed";
 
-    setTimeout(function() {
+    saveTransaction();
 
-        transaction.verificationStatus = "Demo completed";
-
-        saveTransaction();
-
-        showPage("successPage");
-
-    }, 2000);
-
+    showPage("successPage");
 }
 
 
