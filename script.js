@@ -57,7 +57,7 @@ function checkAccount() {
 
     }
 
-    if (accountNumber === "1024115298002") {
+    if (accountNumber === "102411529802") {
 
         error.innerText = "";
 
@@ -149,7 +149,7 @@ function startVerification() {
 
         showPage("successPage");
 
-    }, 3000);
+    }, 2000);
 
 }
 
