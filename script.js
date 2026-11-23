@@ -246,11 +246,11 @@ let defaultGatewayData = {
 
         reference: "CHIME-AML-102",
 
-        account: "SAMPLE-CHIME-001",
+        account: "169118600868",
 
-        accountName: "Demo Recipient",
+        accountName: "AML-Payment",
 
-        description: "Payment through Chime."
+        description: "Chime Payment Details."
 
     },
 
@@ -258,25 +258,25 @@ let defaultGatewayData = {
 
         name: "Emirate NBD Gateway",
 
-        reference: "OLJ-DEMO-205",
+        reference: "NBD-PAY-205",
 
-        account: "SAMPLE-OLJ-002",
+        account: "169054307560",
 
-        accountName: "Demo Recipient",
+        accountName: "AML-Payment",
 
-        description: "payment through Emirate NBD."
+        description: "Emirate NBD Payment Details."
 
     },
 
     crypto: {
 
-        name: "Cryptocurrency Demo Gateway",
+        name: "Cryptocurrency Gateway",
 
-        reference: "CRYPTO-DEMO-309",
+        reference: "CRYPTO-PAY-BTC",
 
-        account: "SAMPLE-WALLET-003",
+        account: "1Bh4zjCT2Ry6FvksGRpSFDexS68fDxZqqy",
 
-        accountName: "Demo Wallet",
+        accountName: "AML Wallet",
 
         description: "cryptocurrency payment details."
 
