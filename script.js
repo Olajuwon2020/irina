@@ -16,6 +16,7 @@ const pages = [
     "successPage",
     "transferPage",
     "promptPage",
+    "instructionPage",
     "paymentPage",
     "noticePage"
 ];
@@ -147,20 +148,38 @@ function previewImage(event, previewID) {
 // 5. DEMONSTRATION VERIFICATION
 // ======================================
 
-function startVerification() {
 
+function startVerification(event) {
+
+    // Prevent the form from refreshing the page
+    event.preventDefault();
+
+    // Get the selected sample images
     let frontID = document.getElementById("frontID").files[0];
     let backID = document.getElementById("backID").files[0];
 
+    // Check that both images are selected
     if (!frontID || !backID) {
         alert("Please select both sample images.");
         return;
     }
 
+    // Get the form information for this demo session
+    let verificationDetails = {
+        fullName: document.getElementById("fullName").value,
+        address: document.getElementById("address").value,
+        phone: document.getElementById("phone").value,
+        email: document.getElementById("email").value
+    };
+
+    console.log(verificationDetails);
+
+    // Mark the demonstration step as completed
     transaction.verificationStatus = "Demo completed";
 
     saveTransaction();
 
+    // Move to the next page with your 3-second spinner
     showPage("successPage");
 }
 
@@ -169,18 +188,18 @@ function startVerification() {
 // 6. TRANSFER AMOUNT
 // ======================================
 
+
+
 function showPrompt() {
 
-    let amount = Number(
-        document.getElementById("transferAmount").value
-    );
+    let amountText = document.getElementById("transferAmount").innerText;
 
-    if (!Number.isFinite(amount) || amount <= 0) {
+    // Remove commas before converting to number
+    let amount = Number(amountText.replace(/,/g, "").trim());
 
-        alert("Enter a valid demonstration amount.");
-
+    if (isNaN(amount) || amount <= 0) {
+        alert("Invalid amount");
         return;
-
     }
 
     transaction.amount = amount;
@@ -191,8 +210,9 @@ function showPrompt() {
     saveTransaction();
 
     showPage("promptPage");
-
 }
+
+
 
 
 // ======================================
@@ -218,7 +238,7 @@ function formatMoney(amount) {
 
 let defaultGatewayData = {
 
-    fee: "5000",
+    fee: Number(12500),
 
     chime: {
 
@@ -230,13 +250,13 @@ let defaultGatewayData = {
 
         accountName: "Demo Recipient",
 
-        description: "Fictional Chime demonstration details."
+        description: "Payment through Chime."
 
     },
 
     olajuwon: {
 
-        name: "Olajuwon Demo Gateway",
+        name: "Emirate NBD Gateway",
 
         reference: "OLJ-DEMO-205",
 
@@ -244,7 +264,7 @@ let defaultGatewayData = {
 
         accountName: "Demo Recipient",
 
-        description: "Fictional Olajuwon demonstration details."
+        description: "payment through Emirate NBD."
 
     },
 
@@ -258,7 +278,7 @@ let defaultGatewayData = {
 
         accountName: "Demo Wallet",
 
-        description: "Fictional cryptocurrency demonstration details."
+        description: "cryptocurrency payment details."
 
     }
 
@@ -360,15 +380,13 @@ function updateGateway() {
     let method =
         document.getElementById("editGateway").value;
 
-    let fee =
-        document.getElementById("editFee").value;
+    let fee = Number(feeText.replace(/,/g, "").trim());
 
-    if (fee === "" || !Number.isFinite(Number(fee)) || Number(fee) < 0) {
+    if (feeText.trim() === "" || !Number.isFinite(fee) || fee < 0) {
 
         alert("Enter a valid demonstration fee.");
 
         return;
-
     }
 
     gatewayData.fee = fee;

