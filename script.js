@@ -22,9 +22,10 @@ const pages = [
 ];
 
 
+
 let pageTransitionTimer;
 
-function showPage(pageName) {
+function showPage(pageName, addHistory = true) {
 
     let target = document.getElementById(pageName);
     let loader = document.getElementById("globalLoader");
@@ -32,6 +33,15 @@ function showPage(pageName) {
     if (!target || !loader || !pages.includes(pageName)) {
         console.log("Page not found:", pageName);
         return;
+    }
+
+    // Add the page to browser history
+    if (addHistory) {
+        history.pushState(
+            { page: pageName },
+            "",
+            "#" + pageName
+        );
     }
 
     // Stop any previous page transition
@@ -47,7 +57,7 @@ function showPage(pageName) {
     // Show spinner
     loader.classList.remove("d-none");
 
-    // Wait 3 seconds
+    // Wait 1 second
     pageTransitionTimer = setTimeout(function() {
 
         // Hide spinner
@@ -60,6 +70,32 @@ function showPage(pageName) {
 
     }, 1000);
 }
+
+
+// Set the first visible page as the starting history entry
+let initialPage = pages.find(function(page) {
+    return !document.getElementById(page).classList.contains("d-none");
+}) || pages[0];
+
+history.replaceState(
+    { page: initialPage },
+    "",
+    "#" + initialPage
+);
+
+
+// Listen for browser Back and Forward buttons
+window.addEventListener("popstate", function(event) {
+
+    if (event.state && event.state.page) {
+
+        // false means don't create another history entry
+        showPage(event.state.page, false);
+
+    }
+
+});
+
 
 
 // ======================================
